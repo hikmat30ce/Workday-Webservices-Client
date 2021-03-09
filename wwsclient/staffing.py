@@ -1,15 +1,10 @@
 import datetime
-import json
 import sys
-from collections import OrderedDict
-from io import StringIO
 import pytz
-import xmltodict
 import zeep
-from lxml import etree
 from zeep import xsd
-from zeep.wsse.username import UsernameToken
-from zeep import Client
+from util import *
+
 import zeep.exceptions
 
 header = xsd.Element(
@@ -22,53 +17,6 @@ header = xsd.Element(
 )
 workday_common_header = header(Include_Reference_Descriptors_In_Response=True)
 current_date = datetime.datetime.now(pytz.timezone('US/Pacific')).strftime("%Y-%m-%dT%H:%M:%S") + "-08:00"
-
-
-# region Returns workday client
-# Details are provided in Credentials.py file
-def get_client(tenant_host, tenant_id, webservice, webservice_version, username, password):
-    """
-    :param tenant_host:  Tenant Host Name
-    :param tenant_id: Tenant ID
-    :param webservice: Webservice name like, Human_Resources, Staffing, Resource_Management, Financial_Management etc
-    :param webservice_version: Webservice Version, Currently tested with v35.0
-    :param username: Integration username
-    :param password: Integration user password
-    :return: Zeep client object
-    """
-    if "https://" not in tenant_host:
-        tenant_host = "https://" + tenant_host
-    if "@" + tenant_id not in username:
-        username = username + "@" + tenant_id
-    # Build client url
-    client_url = tenant_host + "/ccx/service/" + tenant_id + "/" + webservice + "/" + webservice_version + "?wsdl"
-    return Client(client_url, UsernameToken(username, password))
-
-
-def parse_xml_response(response):
-    return etree.parse(StringIO(response.text.replace("<?xml version='1.0' encoding='UTF-8'?>", '')))
-
-
-def transformedresponse(result, transform):
-    doc = parse_xml_response(result)
-    result_tree = transform(doc)
-    return xmltodict.parse(result_tree)
-
-
-def print_to_console_call_details(response):
-    print("current_page: " + response['root']['Page'])
-    print("total_pages: " + response['root']['Total_Pages'])
-    print("total_results: " + response['root']['Total_Results'])
-
-
-def prepare_response(transformed_response, final_response_result):
-    if isinstance(transformed_response['root']['records']['record'], OrderedDict):
-        final_response_result = final_response_result + json.loads(
-            json.dumps([transformed_response['root']['records']['record']]))
-    else:
-        final_response_result = final_response_result + json.loads(
-            json.dumps(transformed_response['root']['records']['record']))
-    return final_response_result
 
 
 # region Get Workers

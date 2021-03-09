@@ -1,20 +1,22 @@
+import os.path
 from setuptools import setup
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
+HERE = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(HERE, "README.md")) as fid:
+    README = fid.read()
+
 setup(
-    name='wd_services',
-    version='0.1.0',
+    name='wwsclient',
+    version='0.0.0.1',
     description='This script will be expose all workday webservice operations',
-    py_modules=['human_resource'],
-    package_dir={'': 'human_resource'},
-    long_description=long_description,
+    long_description=README,
     long_description_content_type="text/markdown",
     url='https://github.com/hikmat30ce/Workday-Webservices-Client.git',
     author='Hikmat Ullah',
     author_email='me@hikmatu.com',
-    license='MIT License',
-    # packages=['human_resource'],
+    license='MIT',
+    packages=['wwsclient'],
+    include_package_data=True,
     install_requires=[
         'appdirs==1.4.4',
         'attrs==20.3.0',
@@ -48,8 +50,9 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.9',
     ],
+    entry_points={"console_scripts": ["realpython=reader.__main__:main"]},
 
-# install_requires={
+    # install_requires={
     #         "dist": [
     #             'appdirs==1.4.4',
     #             'attrs==20.3.0',
