@@ -4,7 +4,7 @@ import sys
 
 import wwsclient
 from wwsclient import client
-from wwsclient import get_operation
+from wwsclient import service
 from wwsclient import util
 
 

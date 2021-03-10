@@ -24,11 +24,12 @@ def print_to_console_call_details(response):
 
 
 def prepare_response(transformed_response, final_response_result):
-    if isinstance(transformed_response['root']['records']['record'], OrderedDict):
-        final_response_result = final_response_result + json.loads(
-            json.dumps([transformed_response['root']['records']['record']]))
-    else:
-        final_response_result = final_response_result + json.loads(
-            json.dumps(transformed_response['root']['records']['record']))
+    if transformed_response['root']['records'] is not None:
+        if isinstance(transformed_response['root']['records']['record'], OrderedDict):
+            final_response_result = final_response_result + json.loads(
+                json.dumps([transformed_response['root']['records']['record']]))
+        else:
+            final_response_result = final_response_result + json.loads(
+                json.dumps(transformed_response['root']['records']['record']))
     return final_response_result
 

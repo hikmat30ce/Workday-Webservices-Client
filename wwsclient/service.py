@@ -6,6 +6,12 @@ from zeep import xsd
 from wwsclient.util import *
 import zeep.exceptions
 
+"""
+__author__      = Hikmat Ullah
+__copyright__   = Copyright 2021
+__date__        = 18, January 2021
+"""
+
 header = xsd.Element(
     '{urn:com.workday/bsvc}Workday_Common_Header',
     xsd.ComplexType([
@@ -24,6 +30,7 @@ def get_method(client, request, xslt_code, operation, print_to_console=False, co
     :param client: Zeep client
     :param request: request object
     :param xslt_code: xslt code as string
+    :param operation: Webservice Operation
     :param print_to_console: print page numbers fetched in console
     :param count: count returned per page
     :return: All suppliers returned from api
@@ -35,20 +42,16 @@ def get_method(client, request, xslt_code, operation, print_to_console=False, co
 
     while current_page < total_pages:
         try:
+            request['_soapheaders'] = [workday_common_header]
+            request['Response_Filter'] = {
+                "As_Of_Effective_Date": current_date,
+                "As_Of_Entry_DateTime": current_date,
+                "Page": current_page + 1,
+                "Count": count
+            }
+
             with client.settings(raw_response=True):
-                result = getattr(client.service, operation)(_soapheaders=[workday_common_header],
-                                                            Request_References=None if request is None or "Request_References" not in request else
-                                                            request['Request_References'],
-                                                            Request_Criteria=None if request is None or "Request_Criteria" not in request else
-                                                            request['Request_Criteria'],
-                                                            Response_Filter={
-                                                                "As_Of_Effective_Date": current_date,
-                                                                "As_Of_Entry_DateTime": current_date,
-                                                                "Page": current_page + 1,
-                                                                "Count": count
-                                                            },
-                                                            Response_Group=None if request is None or "Response_Group" not in request else
-                                                            request['Response_Group'])
+                result = client.service[operation](**request)
 
             if result.status_code == 200:
                 transformed_response = transformedresponse(result, transform)
@@ -82,3 +85,12 @@ def get_method(client, request, xslt_code, operation, print_to_console=False, co
             break
 
     return final_response_result
+
+
+# endregion
+
+# region Edit, Delete, Submit, Import, ADD, PUT methods
+def crud_method(client, request, operation):
+    request['_soapheaders'] = [workday_common_header]
+    return client.service[operation](**request)
+# endregion
