@@ -6,7 +6,9 @@ from lxml import etree
 
 
 def parse_xml_response(response):
-    return etree.parse(StringIO(response.text.replace("<?xml version='1.0' encoding='UTF-8'?>", '')))
+    rsp_txt=response.text.replace("<?xml version='1.0' encoding='UTF-8'?>", '')
+    rsp_txt=rsp_txt.replace('<?xml version="1.0" encoding="utf-8"?>', '')
+    return etree.parse(StringIO(rsp_txt))
 
 
 def transformedresponse(result, transform):

@@ -4,8 +4,7 @@ import sys
 
 import wwsclient
 from wwsclient import client
-from wwsclient import human_resource
-from wwsclient import staffing
+from wwsclient import get_operation
 from wwsclient import util
 
 
