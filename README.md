@@ -3,7 +3,7 @@
 This project will include clients for all the operations defined in [Workday Public Webservices (WWS)](https://community.workday.com/sites/default/files/file-hosting/productionapi/operations/index.html)
 
 [![PyPI version](https://badge.fury.io/py/wwsclient.svg)](https://badge.fury.io/py/wwsclient)
-[![Build Status](https://travis-ci.com/hikmat30ce/Workday-Webservices-Client.svg?branch=main)](https://travis-ci.com/hikmat30ce/Workday-Webservices-Client.svg)
+[![Build Status](https://travis-ci.com/hikmat30ce/Workday-Webservices-Client.svg?branch=main)](https://travis-ci.com/hikmat30ce/Workday-Webservices-Client)
 
 ## Installation
 
