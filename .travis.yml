@@ -1,0 +1,7 @@
+  
+# Config file for automatic testing at travis-ci.org
+
+sudo: true
+language: python
+notifications:
+  email:  me@hikmatu.com
