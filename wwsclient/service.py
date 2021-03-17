@@ -25,7 +25,7 @@ current_date = datetime.datetime.now(pytz.timezone('US/Pacific')).strftime("%Y-%
 
 
 # region Get Operation
-def get_method(client, request, xslt_code, operation, print_to_console=False, count=100):
+def get_method(client, request, xslt_code, operation, print_to_console=False, count=100, add_response_filter=True):
     """
     :param client: Zeep client
     :param request: request object
@@ -33,6 +33,7 @@ def get_method(client, request, xslt_code, operation, print_to_console=False, co
     :param operation: Webservice Operation
     :param print_to_console: print page numbers fetched in console
     :param count: count returned per page
+    :param add_response_filter: control to add response filter in request or not. this is necessary when report is called
     :return: All suppliers returned from api
     """
     transform = etree.XSLT(etree.XML(xslt_code))
@@ -43,12 +44,13 @@ def get_method(client, request, xslt_code, operation, print_to_console=False, co
     while current_page < total_pages:
         try:
             request['_soapheaders'] = [workday_common_header]
-            request['Response_Filter'] = {
-                "As_Of_Effective_Date": current_date,
-                "As_Of_Entry_DateTime": current_date,
-                "Page": current_page + 1,
-                "Count": count
-            }
+            if add_response_filter:
+                request['Response_Filter'] = {
+                    "As_Of_Effective_Date": current_date,
+                    "As_Of_Entry_DateTime": current_date,
+                    "Page": current_page + 1,
+                    "Count": count
+                }
 
             with client.settings(raw_response=True):
                 result = client.service[operation](**request)
