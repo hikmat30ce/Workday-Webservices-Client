@@ -21,7 +21,7 @@ header = xsd.Element(
     ])
 )
 workday_common_header = header(Include_Reference_Descriptors_In_Response=True)
-current_date = datetime.datetime.now(pytz.timezone('US/Pacific')).strftime("%Y-%m-%dT%H:%M:%S") + "-08:00"
+current_date = datetime.datetime.now(pytz.timezone('US/Pacific')).strftime("%Y-%m-%dT%H:%M:%S")
 
 
 # region Get Operation
@@ -40,6 +40,8 @@ def get_method(client, request, xslt_code, operation, print_to_console=False, co
     total_pages = 1
     current_page = 0
     final_response_result = []
+    if print_to_console:
+        print("calling workday for operation: " + operation + ", with results per page: " + str(count))
 
     while current_page < total_pages:
         try:
