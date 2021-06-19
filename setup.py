@@ -7,7 +7,7 @@ with open(os.path.join(HERE, "README.md")) as fid:
 
 setup(
     name='wwsclient',
-    version='0.0.0.8',
+    version='0.0.0.9',
     description='This script will be expose all workday webservice operations',
     long_description=README,
     long_description_content_type="text/markdown",
@@ -32,7 +32,7 @@ setup(
         'requests-file==1.5.1',
         'requests-toolbelt==0.9.1',
         'six==1.15.0',
-        'urllib3==1.26.4',
+        'urllib3==1.26.5',
         'xmltodict==0.12.0',
         'zeep==4.0.0'],
 
