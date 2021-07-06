@@ -21,11 +21,12 @@ header = xsd.Element(
     ])
 )
 workday_common_header = header(Include_Reference_Descriptors_In_Response=True)
-current_date = datetime.datetime.now(pytz.timezone('US/Pacific')).strftime("%Y-%m-%dT%H:%M:%S")
 
 
 # region Get Operation
-def get_method(client, request, xslt_code, operation, print_to_console=False, count=100, add_response_filter=True):
+def get_method(client, request, xslt_code, operation,
+               current_date=datetime.datetime.now(pytz.timezone('US/Pacific')).strftime("%Y-%m-%dT%H:%M:%S"),
+               print_to_console=False, count=100, add_response_filter=True):
     """
     :param client: Zeep client
     :param request: request object
@@ -36,6 +37,7 @@ def get_method(client, request, xslt_code, operation, print_to_console=False, co
     :param add_response_filter: control to add response filter in request or not. this is necessary when report is called
     :return: All suppliers returned from api
     """
+    # current_date = datetime.datetime.now(pytz.timezone('US/Pacific')).strftime("%Y-%m-%dT%H:%M:%S")
     transform = etree.XSLT(etree.XML(xslt_code))
     total_pages = 1
     current_page = 0
